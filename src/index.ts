@@ -51,6 +51,22 @@ app.get("/note", async (req: Request, res: Response) => {
     }
 })
 
+app.put("/note", async (req: Request, res: Response) => {
+  console.log(
+    "editing"
+  )
+  try {
+    if (req.body === null) {
+    res.status(500).json({ success: false, message: "Error al obtener las notas" });
+    } else {
+      const data = req.body
+      await NoteModel.findByIdAndUpdate(data.id, data)
+    }
+  }  catch (error) {
+    res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
+  }
+})
+
 // Inicia el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
