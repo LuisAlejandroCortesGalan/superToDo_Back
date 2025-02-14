@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(cors({
   origin:
- "https://super-to-do-front.vercel.app",
+ "https://super-to-do-front.vercel.app/note",
  // URL para desarrollo
   methods: "GET,POST,PUT,DELETE",
   credentials: true,  // Si usas cookies o autenticación
@@ -24,9 +24,7 @@ app.use(cors({
 connectDB();
 
 // Ruta básica
-app.get("/", (req: Request, res: Response) => {
-  console.log("estoy aqui en el back", PORT);
-  
+app.get("/", (req: Request, res: Response) => {  
   res.send("Servidor funcionando correctamente.");
 });
 
@@ -76,4 +74,6 @@ app.put("/note", async (req: Request, res: Response) => {
 // Inicia el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log("estoy aqui en el back", PORT);
+
 });
