@@ -13,17 +13,14 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? "https://super-to-do-front.vercel.app"  // Permitir solo el dominio en producción
-    : "http://localhost:5173",  // Permitir solo en desarrollo (localhost)
+  origin: [
+    "https://super-to-do-front.vercel.app"
+  ],
   methods: "GET,POST,PUT,DELETE",
-  credentials: true,
 }));
 
 // Conectar a MongoDB
 connectDB();
-
-console.log(process.env.NODE_ENV);
 
 // Ruta básica
 app.get("/", (req: Request, res: Response) => {
