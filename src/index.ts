@@ -25,6 +25,8 @@ connectDB();
 
 // Ruta básica
 app.get("/", (req: Request, res: Response) => {
+  console.log("estoy aqui en el back", PORT);
+  
   res.send("Servidor funcionando correctamente.");
 });
 
