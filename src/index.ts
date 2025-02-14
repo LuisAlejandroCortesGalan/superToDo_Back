@@ -13,11 +13,14 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors({
-  origin:
- "https://super-to-do-front.vercel.app",
- // URL para desarrollo
+  origin: function(origin, callback) {
+    if (origin === "https://super-to-do-front.vercel.app" || origin === "http://localhost:5173") {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,POST,PUT,DELETE",
-  credentials: true,  // Si usas cookies o autenticación
 }));
 
 // Conectar a MongoDB
@@ -25,7 +28,7 @@ connectDB();
 
 // Ruta básica
 app.get("/", (req: Request, res: Response) => {  
-  res.send("Servidor funcionando correctamente.");
+  res.send(`servidor funcionando correctamente.${PORT}`);
 });
 
 // Ruta para crear un usuario
