@@ -12,15 +12,12 @@ const PORT = process.env.PORT || 5000;
 // Middleware para parsear JSON
 app.use(express.json());
 
+
 app.use(cors({
-  origin: function(origin, callback) {
-    if (origin === "https://super-to-do-front.vercel.app" || origin === "http://localhost:5173") {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: "GET,POST,PUT,DELETE",
+  origin: '*', // Permite cualquier origen, útil para pruebas
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization',
+  credentials: true, // Si utilizas cookies o autenticación
 }));
 
 
