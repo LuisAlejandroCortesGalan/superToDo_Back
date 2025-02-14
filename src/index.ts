@@ -13,7 +13,10 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors({
-  origin: ["https://supertodo-back.onrender.com/", "https://super-to-do-front-git-main-luisalejandrocortesgalans-projects.vercel.app"],
+  origin: [
+    "http://localhost:5173",
+    "https://super-to-do-front-git-main-luisalejandrocortesgalans-projects.vercel.app"
+  ],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 }));
@@ -30,27 +33,27 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/note", async (req: Request, res: Response) => {
   console.log("Servidor para peticioansdads");
   try {
-    const { title, desc, priv ,deleted } = req.body;
+    const { title, desc, priv, deleted } = req.body;
     console.log(title, desc, priv, deleted)
-    if (!title ||!desc) {
+    if (!title || !desc) {
       res.status(400).json({ success: false, message: "Faltan datos necesarios" });
     }
-    const user = new NoteModel({  title, desc, priv ,deleted });
+    const user = new NoteModel({ title, desc, priv, deleted });
     await user.save();
-    res.status(201).json({success: true, message: "Usuario creado", data: user });
+    res.status(201).json({ success: true, message: "Usuario creado", data: user });
   } catch (error) {
-    res.status(500).json({ success: false,message: "Error al crear el usuario", data:error });
+    res.status(500).json({ success: false, message: "Error al crear el usuario", data: error });
   }
 });
 
 app.get("/note", async (req: Request, res: Response) => {
-    try {
-      const notes = await NoteModel.find();
-      
-      res.status(200).json({ success: true, message: "Notas obtenidas", data: notes });
-    } catch (error) {
-      res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
-    }
+  try {
+    const notes = await NoteModel.find();
+
+    res.status(200).json({ success: true, message: "Notas obtenidas", data: notes });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
+  }
 })
 
 app.put("/note", async (req: Request, res: Response) => {
@@ -59,12 +62,12 @@ app.put("/note", async (req: Request, res: Response) => {
   )
   try {
     if (req.body === null) {
-    res.status(500).json({ success: false, message: "Error al obtener las notas" });
+      res.status(500).json({ success: false, message: "Error al obtener las notas" });
     } else {
       const data = req.body
       await NoteModel.findByIdAndUpdate(data.id, data)
     }
-  }  catch (error) {
+  } catch (error) {
     res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
   }
 })
