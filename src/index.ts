@@ -23,16 +23,28 @@ app.use(cors({
   methods: "GET,POST,PUT,DELETE",
 }));
 
-// Conectar a MongoDB
-connectDB();
+
+
+app.use((req, res, next) => {
+  console.log(req.headers.origin);  // Verifica el origen de la solicitud
+  next();
+});
+
 
 // Ruta básica
 app.get("/", (req: Request, res: Response) => {  
+  // Conectar a MongoDB
+  connectDB();
   res.send(`servidor funcionando correctamente.${PORT}`);
+
 });
+
+
 
 // Ruta para crear un usuario
 app.post("/note", async (req: Request, res: Response) => {
+  // Conectar a MongoDB
+connectDB();
   console.log("Servidor para peticioansdads");
   try {
     const { title, desc, priv, deleted } = req.body;
@@ -49,6 +61,8 @@ app.post("/note", async (req: Request, res: Response) => {
 });
 
 app.get("/note", async (req: Request, res: Response) => {
+  // Conectar a MongoDB
+connectDB();
   try {
     const notes = await NoteModel.find();
 
@@ -59,6 +73,8 @@ app.get("/note", async (req: Request, res: Response) => {
 })
 
 app.put("/note", async (req: Request, res: Response) => {
+  // Conectar a MongoDB
+connectDB();
   console.log(
     "editing"
   )
