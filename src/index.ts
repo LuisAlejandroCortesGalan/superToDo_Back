@@ -12,34 +12,31 @@ const PORT = process.env.PORT || 5000;
 // Middleware para parsear JSON
 app.use(express.json());
 
+const allowedOrigins = [
+  "https://super-to-do-front.vercel.app",
+  "http://localhost:5173",
+];
 
-app.use(cors({
-  origin: '*', // Permite cualquier origen, útil para pruebas
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type,Authorization',
-  credentials: true, // Si utilizas cookies o autenticación
-}));
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, origin);
+    } else {
+      callback(new Error("No permitido por CORS"));
+    }
+  },
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+};
 
+// Middleware de CORS antes de las rutas
+app.use(cors(corsOptions));
 
-
-app.use((req, res, next) => {
-  console.log(req.headers.origin);  // Verifica el origen de la solicitud
-  next();
-});
-
-
-app.get("/note", async (req: Request, res: Response) => {
+app.get("/note", async (req, res) => {
   try {
-    const notes = await NoteModel.find();
-
-    // Modificar los headers antes de enviar la respuesta
-    res.setHeader("Access-Control-Allow-Origin", "https://super-to-do-front.vercel.app");
-    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-
-    res.status(200).json({ success: true, message: "Notas obtenidas", data: notes });
+    res.status(200).json({ success: true, message: "Notas obtenidas" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
+    res.status(500).json({ success: false, message: "Error al obtener las notas" });
   }
 });
 
