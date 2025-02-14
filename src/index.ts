@@ -28,12 +28,19 @@ app.use((req, res, next) => {
 });
 
 
-// Ruta básica
-app.get("/", (req: Request, res: Response) => {  
-  // Conectar a MongoDB
-  connectDB();
-  res.send(`servidor funcionando correctamente.${PORT}`);
+app.get("/note", async (req: Request, res: Response) => {
+  try {
+    const notes = await NoteModel.find();
 
+    // Modificar los headers antes de enviar la respuesta
+    res.setHeader("Access-Control-Allow-Origin", "https://super-to-do-front.vercel.app");
+    res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+
+    res.status(200).json({ success: true, message: "Notas obtenidas", data: notes });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
+  }
 });
 
 
