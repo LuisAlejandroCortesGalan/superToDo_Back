@@ -23,6 +23,8 @@ app.use(cors({
 // Conectar a MongoDB
 connectDB();
 
+console.log(process.env.NODE_ENV);
+
 // Ruta básica
 app.get("/", (req: Request, res: Response) => {
   res.send("Servidor funcionando correctamente.");
