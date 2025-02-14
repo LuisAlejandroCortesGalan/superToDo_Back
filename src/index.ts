@@ -14,10 +14,9 @@ app.use(express.json());
 
 app.use(cors({
   origin: [
-    "https://super-to-do-front.vercel.app/"
+    "https://super-to-do-front.vercel.app"
   ],
   methods: "GET,POST,PUT,DELETE",
-  credentials: true,
 }));
 
 // Conectar a MongoDB
