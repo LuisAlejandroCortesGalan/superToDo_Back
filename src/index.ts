@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 
 app.use(cors({
-  origin: "https://supertodo-back.onrender.com/",
+  origin: ["https://supertodo-back.onrender.com/", "https://super-to-do-front-git-main-luisalejandrocortesgalans-projects.vercel.app"],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 }));
