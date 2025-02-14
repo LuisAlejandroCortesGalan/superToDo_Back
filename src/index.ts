@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(cors({
   origin:
- "https://super-to-do-front.vercel.app/note",
+ "https://super-to-do-front.vercel.app",
  // URL para desarrollo
   methods: "GET,POST,PUT,DELETE",
   credentials: true,  // Si usas cookies o autenticación
