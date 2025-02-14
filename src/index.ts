@@ -12,12 +12,15 @@ const PORT = process.env.PORT || 5000;
 // Middleware para parsear JSON
 app.use(express.json());
 
-app.use(cors({
-  origin: [
-    "https://super-to-do-front.vercel.app"
-  ],
+const corsOptions = {
+  origin: process.env.NODE_ENV === "production" 
+    ? "https://super-to-do-front.vercel.app" // En producción
+    : "http://localhost:5173", // En desarrollo
   methods: "GET,POST,PUT,DELETE",
-}));
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 // Conectar a MongoDB
 connectDB();
