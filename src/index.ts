@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./db";
 import { NoteModel } from "./note.schema";
 import cors from "cors";
+import { log } from "console";
 
 dotenv.config();
 
@@ -12,9 +13,15 @@ const PORT = process.env.PORT || 5000;
 // Middleware para parsear JSON
 app.use(express.json());
 
-app.use(cors({
-  origin: "http://localhost:5173"
-}));
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://super-to-do-front.vercel.app'], // Permite localhost y producción
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'], // Permite enviar tokens de autorización si es necesario
+  credentials: true, // Importante si usas cookies o sesiones
+};
+
+app.use(cors(corsOptions));
+
 
 // Conectar a MongoDB
 connectDB();
@@ -58,9 +65,12 @@ app.put("/note", async (req: Request, res: Response) => {
   try {
     if (req.body === null) {
     res.status(500).json({ success: false, message: "Error al obtener las notas" });
+    const data = req.body
+    console.log("ver datos.id y datos" ,data._id, data)
     } else {
       const data = req.body
-      await NoteModel.findByIdAndUpdate(data.id, data)
+      await NoteModel.findByIdAndUpdate(data._id, data)
+      console.log("ver datos.id y datos" ,data._id, data)
     }
   }  catch (error) {
     res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
