@@ -59,19 +59,12 @@ app.get("/note", async (req: Request, res: Response) => {
 })
 
 app.put("/note", async (req: Request, res: Response) => {
-  console.log(
-    "editing"
-  )
   try {
-    if (req.body === null) {
-    res.status(500).json({ success: false, message: "Error al obtener las notas" });
-    const data = req.body
-    console.log("ver datos.id y datos" ,data._id, data)
-    } else {
+    
       const data = req.body
-      await NoteModel.findByIdAndUpdate(data._id, data)
-      console.log("ver datos.id y datos" ,data._id, data)
-    }
+      const bddRes = await NoteModel.findByIdAndUpdate(data.id, data)
+      res.status(200).json({success: true, message: "Nota modificada", data: bddRes})
+    
   }  catch (error) {
     res.status(500).json({ success: false, message: "Error al obtener las notas", data: error });
   }
