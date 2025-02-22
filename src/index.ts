@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import { connectDB } from "./db";
 import { NoteModel } from "./note.schema";
 import cors from "cors";
-import { log } from "console";
 
 dotenv.config();
 
@@ -13,24 +12,9 @@ const PORT = process.env.PORT || 5000;
 // Middleware para parsear JSON
 app.use(express.json());
 
-const corsOptions: cors.CorsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    const allowedOrigins = ['http://localhost:5173', 'https://super-to-do-front.vercel.app'];
-
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-};
-
-
-app.use(cors(corsOptions));
-
+app.use(cors({
+  origin: "http://localhost:5173"
+}));
 
 // Conectar a MongoDB
 connectDB();
