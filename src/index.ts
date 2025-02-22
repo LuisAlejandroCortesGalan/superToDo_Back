@@ -24,8 +24,23 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Servidor funcionando correctamente.");
 });
 
+app.delete("/note", async (req: Request, res: Response)=> {
+  console.log(req.body)
+  try {
+    const {id} = req.body;
+    console.log("delete: ",id)
+    if(!id)res.status(400).json({success: false, message: "Faltan datos necesarios"})
+    const deleted = await NoteModel.findByIdAndDelete(id)
+    console.log(`deleted: ${deleted}`)
+    res.status(201).json({success: true, message: `Exit at delete note id: ${id}`,data: deleted})
+  } catch (error) {
+    console.log("Error at delete note: ",error)
+    res.status(500).json({success: false, message: `Error al eliminar la nota`, data: error})
+  }
+})
+
 // Ruta para crear un usuario
-app.post("/note", async (req: Request, res: Response) => {
+app.post("/note", async (req: Request, res: Response) => { 
   console.log("Servidor para peticioansdads");
   try {
     const { title, desc, priv ,deleted } = req.body;
